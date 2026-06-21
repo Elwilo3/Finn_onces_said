@@ -14,7 +14,7 @@ function getRandomQuote() {
 
   const quote = rows[Math.floor(Math.random() * rows.length)];
 
-  return `Finn once said "${quote.message}" - ${quote.date}`;
+  return `"${quote.message}" - ${quote.date}`;
 }
 
 app.get("/", (req, res) => {

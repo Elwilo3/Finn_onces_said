@@ -4,8 +4,9 @@ const { parse } = require("csv-parse/sync");
 
 const app = express();
 
-app.get("/", (req, res) => {
+function getRandomQuote() {
   const csv = fs.readFileSync("finn_chat_database.csv", "utf8");
+
   const rows = parse(csv, {
     columns: true,
     skip_empty_lines: true
@@ -13,8 +14,20 @@ app.get("/", (req, res) => {
 
   const quote = rows[Math.floor(Math.random() * rows.length)];
 
+  return `${quote.message} (${quote.date} ${quote.time})`;
+}
+
+app.get("/", (req, res) => {
   res.type("text/plain");
-  res.send(`${quote.message} (${quote.date} ${quote.time})`);
+  res.send("Finn quote API is running.");
+});
+
+app.get("/random", (req, res) => {
+  res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+  res.set("Pragma", "no-cache");
+  res.set("Expires", "0");
+  res.type("text/plain");
+  res.send(getRandomQuote());
 });
 
 const port = process.env.PORT || 3000;

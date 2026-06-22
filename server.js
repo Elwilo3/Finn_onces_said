@@ -4,11 +4,6 @@ const { parse } = require("csv-parse/sync");
 
 const app = express();
 
-function formatDate(date) {
-  const [month, day, year] = date.split("/");
-  return `${month.padStart(2, "0")}/${day.padStart(2, "0")}/${year}`;
-}
-
 function getRandomQuote() {
   const csv = fs.readFileSync("finn_chat_database.csv", "utf8");
 
@@ -25,7 +20,7 @@ function getRandomQuote() {
     quote.message.length < 6
   );
 
-  return `"${quote.message}" - ${formatDate(quote.date)}`;
+  return `"${quote.message}"`;
 }
 
 app.get("/", (req, res) => {
